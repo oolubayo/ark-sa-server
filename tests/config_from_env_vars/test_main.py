@@ -118,6 +118,17 @@ class TestConfigFromEnvVars(unittest.TestCase):
             {"Game": {"ServerSettings": {"PlayerBaseStatsMultipliers[7]": "6.0"}}},
         )
 
+    @patch.dict(
+        "os.environ",
+        {"CONFIG_Game_ServerSettings_PerLevelStatsMultiplieru5FDinoTamed7": "12.0"},
+    )
+    def test_process_env_vars_with_underscore_in_varname(self):
+        result = process_env_vars()
+        self.assertEqual(
+            result,
+            {"Game": {"ServerSettings": {"PerLevelStatsMultiplier_DinoTamed[7]": "12.0"}}},
+        )
+
     @patch.dict("os.environ", {"CONFIG_GameUserSettings_DifficultyOffset": "0.25"})
     def test_process_env_vars_with_missing_variable_template_section(self):
         result = process_env_vars()
